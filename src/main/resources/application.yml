@@ -1,0 +1,25 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ms-catalogo
+  datasource:
+    # Si usas Docker Compose local/EC2, el host es el nombre del servicio postgres:
+    url: jdbc:postgresql://postgres-db:5432/pedidos360
+    # Si ejecutas el microservicio de forma local sin Docker Compose, usa:
+    # url: jdbc:postgresql://localhost:5432/pedidos360
+    username: admin
+    password: password123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/d276cca8-e687-4f20-8984-601387d11401/v2.0
