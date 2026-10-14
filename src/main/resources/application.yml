@@ -17,9 +17,24 @@ spring:
     port: ${RABBIT_PORT:5672}
     username: ${RABBIT_USER:guest}
     password: ${RABBIT_PASSWORD:guest}
+    listener:
+      simple:
+        acknowledge-mode: manual          # ACK explicito en cada consumidor (ConfirmacionMensajes)
+        default-requeue-rejected: false   # un rechazo NUNCA se reencola: va a la DLQ
+        prefetch: 10
 
 # Microsoft Entra ID (Azure AD)
 app:
+  # ---- RabbitMQ: TODOS los nombres de mensajeria de este servicio se definen aqui ----
+  rabbit:
+    exchange: pedidos360.events
+    dlx: pedidos360.dlx
+    max-reintentos: 3
+    routing-keys:
+      orden-creada: orden.creada         # consume
+    queues:
+      descontar-stock: catalogo.descontar-stock
+      descontar-stock-dlq: catalogo.descontar-stock.dlq
   azure:
     tenant-id: ${AZURE_TENANT_ID:d276cca8-e687-4f20-8984-601387d11401}
     client-id: ${AZURE_CLIENT_ID:39a9591b-35f1-4165-8cf2-667a2c643920}
