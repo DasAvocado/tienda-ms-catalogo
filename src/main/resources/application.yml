@@ -5,21 +5,23 @@ spring:
   application:
     name: ms-catalogo
   datasource:
-    # Si usas Docker Compose local/EC2, el host es el nombre del servicio postgres:
-    url: jdbc:postgresql://postgres-db:5432/pedidos360
-    # Si ejecutas el microservicio de forma local sin Docker Compose, usa:
-    # url: jdbc:postgresql://localhost:5432/pedidos360
-    username: admin
-    password: password123
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/pedidos360}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:password123}
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_USER:guest}
+    password: ${RABBIT_PASSWORD:guest}
+
+# Microsoft Entra ID (Azure AD)
+app:
+  azure:
+    tenant-id: ${AZURE_TENANT_ID:d276cca8-e687-4f20-8984-601387d11401}
+    client-id: ${AZURE_CLIENT_ID:39a9591b-35f1-4165-8cf2-667a2c643920}
   security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://login.microsoftonline.com/d276cca8-e687-4f20-8984-601387d11401/v2.0
+    require-roles: ${REQUIRE_ROLES:true}

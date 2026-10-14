@@ -1,0 +1,9 @@
+services:
+  ms-catalogo:
+    build: .
+    image: pedidos360/ms-catalogo
+    container_name: ms-catalogo
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    env_file: .env      # copia .env.example a .env y completa los valores
