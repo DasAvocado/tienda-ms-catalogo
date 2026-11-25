@@ -30,6 +30,11 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+		<!-- Apache Kafka (Spring for Apache Kafka; version gestionada por Spring Boot) -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>

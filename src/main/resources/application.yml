@@ -25,6 +25,19 @@ spring:
 
 # Microsoft Entra ID (Azure AD)
 app:
+  # ---- Apache Kafka: eventos de analitica (navegacion, pagos, fraude, transacciones) ----
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092,localhost:9094,localhost:9096}
+    replicas: ${KAFKA_REPLICAS:3}             # factor de replicacion (1 si usas un solo broker en local)
+    topicos:
+      catalogo:                          # estado de cada producto (precio/stock): COMPACTADO, clave productoId
+        nombre: pedidos360.catalogo
+        particiones: 3
+      navegacion:                        # interacciones del usuario: alto volumen, valor de corto plazo
+        nombre: pedidos360.navegacion
+        particiones: 3
+        retencion-ms: 604800000          # 7 dias
+        min-isr: 1
   # ---- RabbitMQ: TODOS los nombres de mensajeria de este servicio se definen aqui ----
   rabbit:
     exchange: pedidos360.events

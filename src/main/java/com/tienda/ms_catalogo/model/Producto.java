@@ -14,8 +14,15 @@ public class Producto {
     private String descripcion;
     private Double precio;
     private Integer stock;
+    /** Motor, Frenos, Electrico... la usa ms-recomendaciones para sugerir productos similares. */
+    private String categoria;
 
     public Producto() {}
+
+    public Producto(Long id, String nombre, String descripcion, Double precio, Integer stock, String categoria) {
+        this(id, nombre, descripcion, precio, stock);
+        this.categoria = categoria;
+    }
 
     public Producto(Long id, String nombre, String descripcion, Double precio, Integer stock) {
         this.id = id;
@@ -40,4 +47,7 @@ public class Producto {
 
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }
+
+    public String getCategoria() { return categoria; }
+    public void setCategoria(String categoria) { this.categoria = categoria; }
 }

@@ -23,10 +23,12 @@ public class StockConsumer {
 
     private final StockService stockService;
     private final ConfirmacionMensajes confirmacion;
+    private final CatalogoPublisher catalogo;
 
-    public StockConsumer(StockService stockService, ConfirmacionMensajes confirmacion) {
+    public StockConsumer(StockService stockService, ConfirmacionMensajes confirmacion, CatalogoPublisher catalogo) {
         this.stockService = stockService;
         this.confirmacion = confirmacion;
+        this.catalogo = catalogo;
     }
 
     @RabbitListener(queues = "${app.rabbit.queues.descontar-stock}", ackMode = "MANUAL")
@@ -37,6 +39,8 @@ public class StockConsumer {
                 throw new MensajeInvalidoException("orden.creada sin ordenId o sin items");
             }
             stockService.descontar(evento);
+            // Nuevo stock -> topico compactado pedidos360.catalogo (lo usa ms-carrito)
+            catalogo.publicarPorId(evento.items().stream().map(OrdenCreadaEvent.Item::productoId).toList());
         });
     }
 }
